@@ -6,6 +6,7 @@ local AmbushManager         = require('Ambush.Manager')
 local Callback 				= require('common.Callback')
 local CallbackList			= require('common.CallbackList')
 local KillData              = require('Agents.KillData')
+local ActorStateManager 	= require("actor_state.actor_state_manager")
 
 local Mode = {
 	UseReadyRoom = true,
@@ -111,6 +112,7 @@ local Mode = {
 	},
 	AgentsManager = nil,
 	AmbushManager = nil,
+	ActorStateManager = nil,
 }
 
 function Mode:CreateTeams()
@@ -128,6 +130,12 @@ end
 
 function Mode:PreInit()
 	print('Pre initialization')
+
+	-- testing the ActorStateManager
+	self.ActorStateManager = ActorStateManager:create()
+	self.ActorStateManager:setStateFromList(self.ActorStateManager:parseActors())
+
+	-- usual code
 	self.AgentsManager = AgentsManager:Create(self.Settings.AIMaxConcurrentCount.Value, Callback:Create(self, self.OnOpForDied))
 	gamemode.SetTeamScoreTypes(self.TeamScoreTypes)
 	gamemode.SetPlayerScoreTypes(self.PlayerScoreTypes)
