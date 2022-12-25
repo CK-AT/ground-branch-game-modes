@@ -24,8 +24,10 @@ function Player:Init(AgentsManager, characterController, eliminationCallback)
     super.Init(self, AgentsManager, characterController, eliminationCallback)
     self.IsNew = true
     self.IsAlive = false
+    self.RespawnTries = 0
     self.DeathReason = ''
     self.CurrentPlayerStart = self.Team:GetPlayerStart(characterController)
+    self.OriginalPlayerStart = self.CurrentPlayerStart
     self.OriginalInsertionPointName = gamemode.GetInsertionPointName(self.CurrentPlayerStart)
 end
 
@@ -52,8 +54,14 @@ function Player:Respawn()
 end
 
 function Player:PrepareRespawn()
-    player.SetLives(self.CharacterController, 1)
-    self:AwardTeamScore('Respawn')
+    if self.RespawnTries == 0 then
+        player.SetLives(self.CharacterController, 1)
+        self:AwardTeamScore('Respawn')
+    elseif self.RespawnTries < 1 then
+        self.RespawnTries = self.RespawnTries + 1
+        AdminTools:ShowDebug('Failed to respawn ' .. tostring(self) .. ', falling back to original player start')
+        self.CurrentPlayerStart = self.OriginalPlayerStart
+    end
 end
 
 function Player:OnSpawned()
@@ -64,6 +72,7 @@ function Player:OnSpawned()
         print(tostring(self) .. ' respawned')
     end
     self.IsNew = false
+    self.RespawnTries = 0
     if self.Character ~= nil then
         self.IsAlive = true
         self.DeathReason = ''
