@@ -4,6 +4,8 @@ Key,SourceString,Comment
 "gamemode_description_deathmatch","[PvP] Fight for the most kills in a free-for-all battle with unlimited respawns.",""
 "gamemode_dtas","Dynamic Take and Secure",""
 "gamemode_description_dtas","[PvP] Two teams spawn in completely random spots on the map. Once Defenders have placed the flag, Attackers must locate and capture the flag area.",""
+"gamemode_hostagerescue","Hostage Rescue",""
+"gamemode_description_hostagerescue","[PvP] One attacker has been taken hostage by defenders inside a building. Attackers must reach their teammate and get them to the extraction.",""
 "gamemode_intelretrieval","Intel Retrieval",""
 "gamemode_description_intelretrieval","[Solo/Co-Op] Search for the intel device in one of several suspected locations, then safely retrieve it to the marked extraction point.",""
 "gamemode_teamelimination","Team Elimination",""
