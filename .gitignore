@@ -7,9 +7,11 @@
 ## gitignore
 !.gitignore
 !license.md
-## Lua scritps
+## Lua scritps and associated markdown
 !GroundBranch/Content/GroundBranch/Lua/*.lua
+!GroundBranch/Content/GroundBranch/Lua/*.md
 !GroundBranch/Content/GroundBranch/Lua/**/*.lua
+!GroundBranch/Content/GroundBranch/Lua/**/*.md
 !GroundBranch/Content/GroundBranch/GameMode/*.lua
 ## Mission files
 !GroundBranch/Content/GroundBranch/Mission/**/*.mis
