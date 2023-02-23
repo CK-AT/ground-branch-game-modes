@@ -38,8 +38,8 @@ An AmbushTrigger can also (re-)activate itself. In this case it will re-trigger 
 | sizeMax | `sizeMax=<number>` | sets the maximum ambush size to `<number>` | 5
 | TriggerOnRelease | `TriggerOnRelease` | trigger when the first one that entered the AmbushTrigger leaves it (reversed logic) | false
 | Visible | `Visible` | shows visible outlines when the trigger is active | false
-| ~~EntryMessageToFirst~~ | ~~`EntryMessageToFirst=<msg>`~~ | ~~shows `<msg>` to the first agent entering the trigger~~ (deprecated, use `Message=First\|FirstEntry\|<msg>` instead) | none
-| ~~DelayedMessageToBluFor~~ | ~~`DelayedMessageToBluFor=<msg>`~~ | ~~shows `<msg>` to all alive BluFor players when the ambush actually spawns~~ (deprecated, use `Message=BluFor\|Ambush\|<msg>` instead) | none
+| ~~EntryMessageToFirst~~ | ~~`EntryMessageToFirst=<msg>`~~ | ~~shows `<msg>` to the first agent entering the trigger~~ (deprecated, use `Message=First\|FirstEntry\|<msg>` for new missions instead) | none
+| ~~DelayedMessageToBluFor~~ | ~~`DelayedMessageToBluFor=<msg>`~~ | ~~shows `<msg>` to all alive BluFor players when the ambush actually spawns~~ (deprecated, use `Message=BluFor\|Ambush\|<msg>` for new missions instead) | none
 | Message | `Message=<who>\|<when>\|<msg>` | shows `<msg>` to `<who>` at event `<when>`, see description below, may be used multiple times | none
 | Group | `Group=<group_name>` | adds all *AISpawnPoints* having the tag `<group_name>` assigned to the pool of spawn points used by the AmbushTrigger | none
 | Activate | `Activate=<name_pattern>` | will activate all *AmbushTriggers* and *Mines* matching `<name_pattern>` when triggered, may be used multiple times | none
