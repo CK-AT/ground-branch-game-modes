@@ -61,3 +61,17 @@ An AmbushTrigger can also (re-)activate itself. In this case it will re-trigger 
   * `FirstEntry`: When the the first agent enters the trigger
   * `LastExit`: When the last agent leaves the trigger
 * `<msg>` is the message shown to the agent(s)
+
+### Examples
+
+`Message=First|FirstEntry|You just stepped onto something...`
+
+* will show "You just stepped onto something..."
+* to the first agent that entered the trigger
+* when the the first agent (=himself) enters the trigger
+
+`Message=BluFor|Ambush|You're doomed!`
+
+* will show "You're doomed!"
+* to aach alive member of team BluFor
+* when the ambush gets spawned
