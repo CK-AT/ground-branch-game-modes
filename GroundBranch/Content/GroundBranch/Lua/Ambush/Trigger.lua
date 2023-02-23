@@ -97,7 +97,7 @@ function Trigger:PostInit()
         end
     end
     print('    Processing deactivation links...')
-    for _, value in ipairs(self.DectivatePatterns) do
+    for _, value in ipairs(self.DeactivatePatterns) do
         local pattern = string.gsub(value, '%*', '.*') .. '$'
         for name, item in pairs(self.Parent.TriggersByName) do
             if string.find(name, pattern) ~= nil then
