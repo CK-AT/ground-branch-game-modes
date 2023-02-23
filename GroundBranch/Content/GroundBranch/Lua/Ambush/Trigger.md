@@ -38,9 +38,26 @@ An AmbushTrigger can also (re-)activate itself. In this case it will re-trigger 
 | sizeMax | `sizeMax=<number>` | sets the maximum ambush size to `<number>` | 5
 | TriggerOnRelease | `TriggerOnRelease` | trigger when the first one that entered the AmbushTrigger leaves it (reversed logic) | false
 | Visible | `Visible` | shows visible outlines when the trigger is active | false
-| EntryMessageToFirst | `EntryMessageToFirst=<msg>` | shows `<msg>` to the first agent entering the trigger | none
-| DelayedMessageToBluFor | `DelayedMessageToBluFor=<msg>` | shows `<msg>` to all alive BluFor players when the ambush actually spawns (or would spawn) | none
+| ~~EntryMessageToFirst~~ | ~~`EntryMessageToFirst=<msg>`~~ | ~~shows `<msg>` to the first agent entering the trigger~~ (deprecated, use `Message=First\|FirstEntry\|<msg>` instead) | none
+| ~~DelayedMessageToBluFor~~ | ~~`DelayedMessageToBluFor=<msg>`~~ | ~~shows `<msg>` to all alive BluFor players when the ambush actually spawns~~ (deprecated, use `Message=BluFor\|Ambush\|<msg>` instead) | none
+| Message | `Message=<who>\|<when>\|<msg>` | shows `<msg>` to `<who>` at event `<when>`, see description below, may be used multiple times | none
 | Group | `Group=<group_name>` | adds all *AISpawnPoints* having the tag `<group_name>` assigned to the pool of spawn points used by the AmbushTrigger | none
 | Activate | `Activate=<name_pattern>` | will activate all *AmbushTriggers* and *Mines* matching `<name_pattern>` when triggered, may be used multiple times | none
 | Deactivate | `Deactivate=<name_pattern>` | will deactivate all *AmbushTriggers* and *Mines* matching `<name_pattern>` when triggered, may be used multiple times | none
 | Mine | `Mine=<name_pattern>` | will trigger all *Mines* matching `<name_pattern>` when triggered, may be used multiple times | none
+
+## Message Definitions
+
+*Messages* can be defined using syntax `Message=<who>|<when>|<msg>` where:
+
+* `<who>` is one of:
+  * `First`: The first agent that entered the trigger
+  * `BluFor`: Each alive member of team BluFor
+* `<when>` is one of the following events:
+  * `Activate`: When the trigger is activated, only useful for triggers that get activated by other triggers
+  * `Deactivate`: When the trigger is deactivated, only useful for triggers that get deactivated by other triggers
+  * `Trigger`: When the trigger gets triggered
+  * `Ambush`: When the ambush gets spawned
+  * `FirstEntry`: When the the first agent enters the trigger
+  * `LastExit`: When the last agent leaves the trigger
+* `<msg>` is the message shown to the agent(s)
