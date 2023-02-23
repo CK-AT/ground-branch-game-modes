@@ -6,9 +6,18 @@ An AmbushTrigger will be active at round start based on *Chance*. On activation 
 * *tiAmbush* as a random time in the range *[tiMin, tiMax]*
 * *sizeAmbush* as a random number in the range *[sizeMin, sizeMax]*
 
-In default mode (*TriggerOnRelease* is not set) a timer starts when the first Agent enters the AmbushTrigger. If at least one Agent stays inside it for *tiPresence* it will trigger, activating all other AmbushTriggers matching *Activate* and causing *sizeAmbush* (but no more than the number of associated *AISpawnPoints*) AI to spawn after *tiAmbush*. An AmbushTrigger can also (re-)activate itself. In this case it will re-trigger after *tiPresence* if *tiPresence* > 5s or after it has been re-occupied after being left.
+In default mode (*TriggerOnRelease* is not set) a timer starts when the first Agent enters the AmbushTrigger. If at least one Agent stays inside it for *tiPresence* it will trigger.
 
 In "reverse" mode (*TriggerOnRelease* is set) it will trigger as soon as the Agent that entered the trigger **first** leaves it.
+
+When tiggering it will:
+
+* activate all AmbushTriggers and Mines matching *Activate*
+* deactivate all AmbushTriggers and Mines matching *Deactivate*
+* cause *sizeAmbush* (but no more than the number of associated *AISpawnPoints*) AI to spawn after *tiAmbush*
+* trigger all associated (and active) *Mines*
+
+An AmbushTrigger can also (re-)activate itself. In this case it will re-trigger after *tiPresence* if *tiPresence* > 5s or after it has been re-occupied after being left.
 
 ## Required Tags
 
@@ -32,5 +41,6 @@ In "reverse" mode (*TriggerOnRelease* is set) it will trigger as soon as the Age
 | EntryMessageToFirst | `EntryMessageToFirst=<msg>` | shows `<msg>` to the first agent entering the trigger | none
 | DelayedMessageToBluFor | `DelayedMessageToBluFor=<msg>` | shows `<msg>` to all alive BluFor players when the ambush actually spawns (or would spawn) | none
 | Group | `Group=<group_name>` | adds all *AISpawnPoints* having the tag `<group_name>` assigned to the pool of spawn points used by the AmbushTrigger | none
-| Activate | `Activate=<trigger_name_pattern>` | will activate all *AmbushTriggers* matching `<trigger_name_pattern>` when triggered, may be used multiple times | none
-| Mine | `Mine=<mine_name_pattern>` | will trigger all *Mines* matching `<mine_name_pattern>` when triggered, may be used multiple times | none
+| Activate | `Activate=<name_pattern>` | will activate all *AmbushTriggers* and *Mines* matching `<name_pattern>` when triggered, may be used multiple times | none
+| Deactivate | `Deactivate=<name_pattern>` | will deactivate all *AmbushTriggers* and *Mines* matching `<name_pattern>` when triggered, may be used multiple times | none
+| Mine | `Mine=<name_pattern>` | will trigger all *Mines* matching `<name_pattern>` when triggered, may be used multiple times | none

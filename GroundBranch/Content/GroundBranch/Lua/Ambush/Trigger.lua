@@ -27,6 +27,8 @@ function Trigger:Create(Parent, Actor, IsLaptop)
     self.Spawns = {}
     self.ActivatePatterns = {}
     self.Activates = {}
+    self.DeactivatePatterns = {}
+    self.Deactivates = {}
     self.MinePatterns = {}
     self.Mines = {}
     self.VisibleWhenActive = actor.HasTag(Actor, 'Visible')
@@ -50,6 +52,8 @@ function Trigger:Create(Parent, Actor, IsLaptop)
                 ))
             elseif key == "Activate" then
                 table.insert(self.ActivatePatterns, value)
+            elseif key == "Deactivate" then
+                table.insert(self.DeactivatePatterns, value)
             elseif key == "Mine" then
                 table.insert(self.MinePatterns, value)
             elseif key == "EntryMessageToFirst" then
@@ -92,9 +96,26 @@ function Trigger:PostInit()
             end
         end
     end
+    print('    Processing deactivation links...')
+    for _, value in ipairs(self.DectivatePatterns) do
+        local pattern = string.gsub(value, '%*', '.*') .. '$'
+        for name, item in pairs(self.Parent.TriggersByName) do
+            if string.find(name, pattern) ~= nil then
+                print('      ' .. tostring(item) .. ' added')
+                table.insert(self.Deactivates, item)
+            end
+        end
+        for name, item in pairs(self.Parent.MinesByName) do
+            if string.find(name, pattern) ~= nil then
+                print('      ' .. tostring(item) .. ' added')
+                table.insert(self.Deactivates, item)
+            end
+        end
+    end
     print('    Summary:')
     print("      Spawns: " .. #self.Spawns)
     print("      Activation links: " .. #self.Activates)
+    print("      Deactivation links: " .. #self.Deactivates)
     print("      Mines: " .. #self.Mines)
 end
 
@@ -179,7 +200,7 @@ end
 function Trigger:Trigger()
     self.State = 'Triggered'
     if self.sizeAmbush > 0 then
-        AdminTools:ShowDebug(tostring(self) .. " triggered, activating " .. #self.Activates .. " other triggers, triggering " .. #self.Mines .. " mines, spawning " .. self.sizeAmbush .. " AI of group " .. self.Tag .. " in " .. self.tiAmbush .. "s")
+        AdminTools:ShowDebug(tostring(self) .. " triggered, activating " .. #self.Activates .. " other triggers, deactivating " .. #self.Deactivates .. " other triggers, triggering " .. #self.Mines .. " mines, spawning " .. self.sizeAmbush .. " AI of group " .. self.Tag .. " in " .. self.tiAmbush .. "s")
         gamemode.script.AgentsManager:SpawnAI(self.tiAmbush, 0.1, self.sizeAmbush, self.Spawns, nil, nil, self.postSpawnCallback, true)
         timer.Set(
             "Trigger_Message_" .. self.Name,
@@ -189,13 +210,17 @@ function Trigger:Trigger()
             false
         )
     else
-        AdminTools:ShowDebug(tostring(self) .. " triggered, activating " .. #self.Activates .. " other triggers, triggering " .. #self.Mines .. " mines, nothing to spawn.")
+        AdminTools:ShowDebug(tostring(self) .. " triggered, activating " .. #self.Activates .. " other triggers, deactivating " .. #self.Deactivates .. " other triggers, triggering " .. #self.Mines .. " mines, nothing to spawn.")
     end
     self.ActorState:SetActive(false)
     self.ActorState:SetVisible(false)
     for _, CurrActivate in pairs(self.Activates) do
         CurrActivate:Activate(true)
         CurrActivate:SyncState()
+    end
+    for _, CurrDeactivate in pairs(self.Deactivates) do
+        CurrDeactivate:Deactivate()
+        CurrDeactivate:SyncState()
     end
     for _, CurrMine in pairs(self.Mines) do
         CurrMine:Trigger()
