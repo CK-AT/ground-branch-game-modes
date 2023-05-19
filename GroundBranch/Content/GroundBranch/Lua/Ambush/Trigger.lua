@@ -240,6 +240,9 @@ end
 function Trigger:Trigger()
     self.State = 'Triggered'
     self:ShowMessages('Trigger')
+    if gamemode.script.OnTrigger ~= nil then
+        gamemode.script:OnTrigger(self)
+    end
     if self.sizeAmbush > 0 then
         AdminTools:ShowDebug(tostring(self) .. " triggered, activating " .. #self.Activates .. " other triggers, deactivating " .. #self.Deactivates .. " other triggers, triggering " .. #self.Mines .. " mines, spawning " .. self.sizeAmbush .. " AI of group " .. self.Tag .. " in " .. self.tiAmbush .. "s")
         gamemode.script.AgentsManager:SpawnAI(self.tiAmbush, 0.1, self.sizeAmbush, self.Spawns, nil, nil, self.postSpawnCallback, true)
