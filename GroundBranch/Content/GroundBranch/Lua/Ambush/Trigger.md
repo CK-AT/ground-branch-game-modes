@@ -73,5 +73,5 @@ An AmbushTrigger can also (re-)activate itself. In this case it will re-trigger 
 `Message=BluFor|Ambush|You're doomed!`
 
 * will show "You're doomed!"
-* to aach alive member of team BluFor
+* to each alive member of team BluFor
 * when the ambush gets spawned

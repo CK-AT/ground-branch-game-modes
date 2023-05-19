@@ -10,13 +10,13 @@ Message.__index = Message
 function Message:Create(Parent, String)
     local self = setmetatable({}, Message)
     self.Parent = Parent
-    _, _, self.Who, self.Time, self.Msg = string.find(String, "(.+)|(.+)|(.+)")
-    print('        Who: ' .. self.Who .. '; When: ' .. self.Time .. '; Msg: ' .. self.Msg)
+    _, _, self.Who, self.Event, self.Msg = string.find(String, "(.+)|(.+)|(.+)")
+    print('        Who: ' .. self.Who .. '; When: ' .. self.Event .. '; Msg: ' .. self.Msg)
     return self
 end
 
-function Message:Send(CurrTime)
-    if CurrTime == self.Time then
+function Message:Show(CurrEvent)
+    if CurrEvent == self.Time then
         if self.Who == "First" then
             self.Parent.FirstAgent:DisplayMessage(self.Msg, 'Upper', 10.0)
         elseif self.Who == "BluFor" then
@@ -96,10 +96,10 @@ function Trigger:AddMessage(String)
     table.insert(self.Messages, msg)
 end
 
-function Trigger:ProcessMessages(CurrTime)
-    print(tostring(self) .. ': Processing "' .. CurrTime .. '" messages...')
+function Trigger:ShowMessages(CurrEvent)
+    print(tostring(self) .. ': Showing "' .. CurrEvent .. '" messages...')
     for _, msg in ipairs(self.Messages) do
-        msg:Send(CurrTime)
+        msg:Show(CurrEvent)
     end
 end
 
@@ -199,7 +199,7 @@ function Trigger:Activate(IsLinked)
     self.State = 'Active'
     IsLinked = IsLinked or false
     if IsLinked then
-        self:ProcessMessages('Activate')
+        self:ShowMessages('Activate')
         if self.AgentsCount > 0 then
             if self.tiPresence < 5.0 then
                 AdminTools:ShowDebug(tostring(self) .. ' reactivated, tiPresence < 5.0s (' .. self.tiPresence .. 's), will only re-trigger if re-occupied.')
@@ -228,7 +228,7 @@ function Trigger:Deactivate(IsLinked)
     print('Deactivating ' .. tostring(self) .. '...')
     IsLinked = IsLinked or false
     if IsLinked then
-        self:ProcessMessages('Deactivate')
+        self:ShowMessages('Deactivate')
     end
     self.State = 'Inactive'
     self.Agents = {}
@@ -239,7 +239,7 @@ end
 
 function Trigger:Trigger()
     self.State = 'Triggered'
-    self:ProcessMessages('Trigger')
+    self:ShowMessages('Trigger')
     if self.sizeAmbush > 0 then
         AdminTools:ShowDebug(tostring(self) .. " triggered, activating " .. #self.Activates .. " other triggers, deactivating " .. #self.Deactivates .. " other triggers, triggering " .. #self.Mines .. " mines, spawning " .. self.sizeAmbush .. " AI of group " .. self.Tag .. " in " .. self.tiAmbush .. "s")
         gamemode.script.AgentsManager:SpawnAI(self.tiAmbush, 0.1, self.sizeAmbush, self.Spawns, nil, nil, self.postSpawnCallback, true)
@@ -270,7 +270,7 @@ function Trigger:Trigger()
 end
 
 function Trigger:SendMessage()
-    self:ProcessMessages('Ambush')
+    self:ShowMessages('Ambush')
 end
 
 function Trigger:OnBeginOverlap(Agent)
@@ -281,7 +281,7 @@ function Trigger:OnBeginOverlap(Agent)
             local Message = tostring(Agent) .. ' entered ' .. tostring(self) .. ', ' .. self.AgentsCount .. ' agents present'
             if self.AgentsCount == 1 then
                 self.FirstAgent = Agent
-                self:ProcessMessages('FirstEntry')
+                self:ShowMessages('FirstEntry')
                 if self.TriggerOnRelease == false then
                     if self.tiPresence < 0.2 then
                         AdminTools:ShowDebug(Message)
@@ -316,7 +316,7 @@ function Trigger:OnEndOverlap(Agent)
                 end
             end
             if self.AgentsCount == 0 then
-                self:ProcessMessages('LastExit')
+                self:ShowMessages('LastExit')
                 timer.Clear("Trigger_" .. self.Name, self)
                 Message = Message .. ', timer aborted'
             end
