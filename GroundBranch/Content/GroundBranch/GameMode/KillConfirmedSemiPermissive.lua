@@ -227,6 +227,27 @@ function Mode:OnLocalUpriseSpawned()
 	self.Teams.BluFor:DisplayMessageToAlivePlayers('INTEL: Armed civilians spotted nearby!', 'Upper', 5.0, 'Always')
 end
 
+function Mode:TriggeredUprise(tiUpset)
+	AdminTools:ShowDebug(tostring(self.Teams.CIVArmed) .. ' will uprise for ' .. tiUpset .. 's now...')
+	timer.Set(
+		'UpriseCooldown',
+		self,
+		self.OnUpriseCooldown,
+		tiUpset,
+		false
+	)
+	self.Teams.CIVArmed:RemoveDefaultEliminationCallback()
+	self.Teams.BluFor:RemoveHealableTeam(self.Teams.CIVArmed)
+	self.Teams.CIVArmed:SetAttitude(self.Teams.BluFor, 'Hostile')
+end
+
+function Mode:OnTrigger(trigger)
+	if trigger.tiHostile ~= nil then
+		AdminTools:ShowDebug(tostring(trigger) .. " is causing an uprise for " .. trigger.tiHostile .. 's ...')
+		self:TriggeredUprise(trigger.tiHostile)
+	end
+end
+
 function Mode:OnCivDied(killData)
 	if killData.KillerTeam == self.Teams.BluFor then
 		self.Objectives.AvoidFatality:ReportFatality()
