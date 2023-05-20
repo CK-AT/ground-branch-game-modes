@@ -2,6 +2,7 @@ local AdminTools = require('AdminTools')
 local Tables = require('Common.Tables')
 local SpawnPoint = require('Spawns.Point')
 local ActorState = require('common.ActorState')
+local Prop = require('Ambush.Prop')
 
 local Message = {}
 
@@ -53,6 +54,8 @@ function Trigger:Create(Parent, Actor, IsLaptop)
     self.Deactivates = {}
     self.MinePatterns = {}
     self.Mines = {}
+    self.Props = {}
+    self.PropsCount = 0
     self.VisibleWhenActive = actor.HasTag(Actor, 'Visible')
     self.TriggerOnRelease = actor.HasTag(Actor, 'TriggerOnRelease')
     self.FirstAgent = nil
@@ -88,6 +91,13 @@ function Trigger:Create(Parent, Actor, IsLaptop)
             end
         end
     end
+    print('    Gathering props...')
+    for _, Actor in ipairs(gameplaystatics.GetAllActorsWithTag(self.Name)) do
+        local NewProp = Prop:Create(Parent, Actor)
+        self.Props[NewProp.Name] = NewProp
+        self.PropsCount = self.PropsCount + 1
+    end
+    print('    Found a total of ' .. self.PropsCount .. ' props.')
     return self
 end
 
@@ -160,6 +170,9 @@ end
 
 function Trigger:SyncState()
     self.ActorState:Sync()
+    for _, Prop in pairs(self.Props) do
+        Prop:SyncState()
+    end
 end
 
 function Trigger:SetDebugVisibility(visible)
@@ -218,8 +231,13 @@ function Trigger:Activate(IsLinked)
         self.Agents = {}
         self.AgentsCount = 0
     end
+    for _, Prop in pairs(self.Props) do
+        Prop:SetActive(true)
+        Prop:SetVisible(true)
+        Prop:SetCollidable(not Prop.Walkthrough)
+    end
     self.ActorState:SetActive(true)
-    if self.VisibleWhenActive then
+    if self.IsLaptop or self.VisibleWhenActive then
         self.ActorState:SetVisible(true)
     end
 end
@@ -233,6 +251,11 @@ function Trigger:Deactivate(IsLinked)
     self.State = 'Inactive'
     self.Agents = {}
     self.AgentsCount = 0
+    for _, Prop in pairs(self.Props) do
+        Prop:SetActive(false)
+        Prop:SetVisible(false)
+        Prop:SetCollidable(false)
+    end
     self.ActorState:SetActive(false)
     self.ActorState:SetVisible(false)
 end
@@ -256,8 +279,10 @@ function Trigger:Trigger()
     else
         AdminTools:ShowDebug(tostring(self) .. " triggered, activating " .. #self.Activates .. " other triggers, deactivating " .. #self.Deactivates .. " other triggers, triggering " .. #self.Mines .. " mines, nothing to spawn.")
     end
-    self.ActorState:SetActive(false)
-    self.ActorState:SetVisible(false)
+    if not self.IsLaptop then
+        self.ActorState:SetActive(false)
+        self.ActorState:SetVisible(false)
+    end
     for _, CurrActivate in pairs(self.Activates) do
         CurrActivate:Activate(true)
         CurrActivate:SyncState()
@@ -268,6 +293,11 @@ function Trigger:Trigger()
     end
     for _, CurrMine in pairs(self.Mines) do
         CurrMine:Trigger()
+    end
+    for _, Prop in pairs(self.Props) do
+        Prop:SetActive(false)
+        Prop:SetVisible(false)
+        Prop:SetCollidable(false)
     end
     self:SyncState()
 end

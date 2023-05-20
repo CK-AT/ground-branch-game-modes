@@ -23,7 +23,7 @@ An AmbushTrigger can also (re-)activate itself. In this case it will re-trigger 
 
 | Tag | Syntax | Description
 | --- | --- | --- |
-| Ambush | `Ambush` | marks a *GameTrigger* object as an AmbushTrigger
+| Ambush | `Ambush` | marks a *GameTrigger* or *Laptop* object as an AmbushTrigger, a *Laptop* also has to have its script name set to "GroundBranch/Lua/TriggerLaptop.lua"
 
 ## Optional Tags
 
@@ -45,6 +45,10 @@ An AmbushTrigger can also (re-)activate itself. In this case it will re-trigger 
 | Activate | `Activate=<name_pattern>` | will activate all *AmbushTriggers* and *Mines* matching `<name_pattern>` when triggered, may be used multiple times | none
 | Deactivate | `Deactivate=<name_pattern>` | will deactivate all *AmbushTriggers* and *Mines* matching `<name_pattern>` when triggered, may be used multiple times | none
 | Mine | `Mine=<name_pattern>` | will trigger all *Mines* matching `<name_pattern>` when triggered, may be used multiple times | none
+| OnSearch | `OnSearch=<text>` | `<text>` will be shown while searching (=interacting), only applies to *Laptop* objects | "Are you in for surprises?"
+| OnSuccess | `OnSuccess=<text>` | `<text>` will be shown after success (=triggering), only applies to *Laptop* objects | "There you go..."
+| SearchTime | `SearchTime=<seconds>` | interaction time required for triggering, only applies to *Laptop* objects | 10
+| Timeout | `Timeout=<seconds>` | progress will reset to zero after `<seconds>` without interaction, only applies to *Laptop* objects | 1
 
 ## Message Definitions
 
