@@ -49,6 +49,7 @@ An AmbushTrigger can also (re-)activate itself. In this case it will re-trigger 
 | OnSuccess | `OnSuccess=<text>` | `<text>` will be shown after success (=triggering), only applies to *Laptop* objects | "There you go..."
 | SearchTime | `SearchTime=<seconds>` | interaction time required for triggering, only applies to *Laptop* objects | 10
 | Timeout | `Timeout=<seconds>` | progress will reset to zero after `<seconds>` without interaction, only applies to *Laptop* objects | 1
+| Keep | `Keep` | keep the laptop visible after it has been trigger, only applies to *Laptop* objects | false
 
 ## Message Definitions
 

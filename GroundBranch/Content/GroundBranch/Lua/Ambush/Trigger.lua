@@ -58,6 +58,7 @@ function Trigger:Create(Parent, Actor, IsLaptop)
     self.PropsCount = 0
     self.VisibleWhenActive = actor.HasTag(Actor, 'Visible')
     self.TriggerOnRelease = actor.HasTag(Actor, 'TriggerOnRelease')
+    self.Keep = actor.HasTag(Actor, 'Keep')
     self.FirstAgent = nil
     self.Messages = {}
     print('  ' .. tostring(self) .. ' found.')
@@ -279,7 +280,7 @@ function Trigger:Trigger()
     else
         AdminTools:ShowDebug(tostring(self) .. " triggered, activating " .. #self.Activates .. " other triggers, deactivating " .. #self.Deactivates .. " other triggers, triggering " .. #self.Mines .. " mines, nothing to spawn.")
     end
-    if not self.IsLaptop then
+    if not self.IsLaptop or not self.Keep then
         self.ActorState:SetActive(false)
         self.ActorState:SetVisible(false)
     end
