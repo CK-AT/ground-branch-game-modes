@@ -17,7 +17,7 @@ function Message:Create(Parent, String)
 end
 
 function Message:Show(CurrEvent)
-    if CurrEvent == self.Time then
+    if CurrEvent == self.Event then
         if self.Who == "First" then
             self.Parent.FirstAgent:DisplayMessage(self.Msg, 'Upper', 10.0)
         elseif self.Who == "BluFor" then
