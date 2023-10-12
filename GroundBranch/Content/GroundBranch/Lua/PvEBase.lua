@@ -12,6 +12,7 @@ local Mode = {
 	UseRounds = true,
 	MissionTypeDescription = "TBD",
 	StringTables = { "TerroristHunt" },
+	GameModeType = "PVE",
 	Settings = {
 		OpForCount = {
 			Min = 1,
