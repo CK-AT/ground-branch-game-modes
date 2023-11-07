@@ -123,6 +123,7 @@ function Trigger:PostInit()
             if string.find(name, pattern) ~= nil then
                 print('      ' .. tostring(mine) .. ' added')
                 table.insert(self.Mines, mine)
+                table.insert(mine.Triggers, self)
             end
         end
     end

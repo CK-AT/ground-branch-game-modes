@@ -23,6 +23,7 @@ function Mine:Create(Parent, Actor)
     self.PropsCount = 0
     self.Defusers = {}
     self.BlastZones = {}
+    self.Triggers = {}
     self.Hidden = actor.HasTag(Actor, 'Hidden')
     print('  ' .. tostring(self) .. ' found.')
     print('    Parameters:')
@@ -124,7 +125,7 @@ function Mine:Deactivate()
     end
 end
 
-function Mine:Defuse()
+function Mine:Defuse(DeactivateTriggers)
     AdminTools:ShowDebug(tostring(self) .. ' defused.')
     self.State = 'Inactive'
     self.ActorState:SetActive(false)
@@ -139,6 +140,11 @@ function Mine:Defuse()
     end
     for _, CurrBlast in ipairs(self.BlastZones) do
         CurrBlast:Deactivate()
+    end
+    if DeactivateTriggers then
+        for _, CurrTrigger in ipairs(self.Triggers) do
+            CurrTrigger:Deactivate()
+        end
     end
     self:SyncState()
 end

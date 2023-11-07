@@ -28,7 +28,7 @@ function laptop:ServerUseTimer(User, DeltaTime)
 	if Result.Percentage == 1.0 then
 		timer.Clear(self.Timers.Timeout.Name, self)
 		if gamemode.script.AmbushManager ~= nil then
-			gamemode.script.AmbushManager:OnDefuse(self.Object, DefusingAgent)
+			gamemode.script.AmbushManager:OnDefuse(self.Object, DefusingAgent, self.DeactivateTriggers)
 		else
 			AdminTools:ShowDebug("Defuser: gamemode doesn't define AmbushManager")
 		end
@@ -54,6 +54,7 @@ function laptop:OnReset()
 	print(self.Name .. ": Reset")
 	self.CurrentTime = 0
 	self.Timers.Timeout.Name = "Timeout_" .. actor.GetName(self.Object)
+    self.DeactivateTriggers = actor.HasTag(self.Object, 'DeactivateTriggers')
 	for _, Tag in ipairs(actor.GetTags(self.Object)) do
 		local key
 		local value

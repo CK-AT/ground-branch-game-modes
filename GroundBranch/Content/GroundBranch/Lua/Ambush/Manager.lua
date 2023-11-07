@@ -91,12 +91,12 @@ function AmbushManager:GetMine(Name)
     return self.MinesByName[Name]
 end
 
-function AmbushManager:OnDefuse(Defuser, DefusingAgent)
+function AmbushManager:OnDefuse(Defuser, DefusingAgent, DeactivateTriggers)
     DefusingAgent:DisplayMessage('IED sucessfully defused.', 'Upper', 2.0)
     local Mines = self.MinesByDefuserName[actor.GetName(Defuser)]
     if Mines ~= nil then
         for _, Mine in ipairs(Mines) do
-            Mine:Defuse()
+            Mine:Defuse(DeactivateTriggers)
         end
     end
 end
