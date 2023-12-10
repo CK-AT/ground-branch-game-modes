@@ -10,8 +10,6 @@ function DynamicMeshGroup:Create(Parent, Actor)
     self.Parent = Parent
     self.Meshes = {}
     self.Name = nil
-    self.Min = nil
-    self.Max = nil
     table.insert(self.Meshes, ActorState:Create(Actor))
     print('  ' .. 'DynamicMesh ' .. actor.GetName(Actor) .. ' found.')
     print('    Parameters:')
@@ -35,11 +33,11 @@ function DynamicMeshGroup:merge(other)
     for _, mesh in ipairs(other.Meshes) do
         table.insert(self.Meshes, mesh)
     end
-    if other.Min ~= nil then
-        self.Min = other.Min
+    if other.removeMin ~= nil then
+        self.removeMin = other.removeMin
     end
-    if other.Max ~= nil then
-        self.Max = other.Max
+    if other.removeMax ~= nil then
+        self.removeMax = other.removeMax
     end
 end
 
@@ -55,22 +53,22 @@ end
 
 function DynamicMeshGroup:Randomize()
     for _, mesh in ipairs(self.Meshes) do
-        mesh:SetVisible(false)
-        mesh:SetActive(false)
+        mesh:SetVisible(true)
+        mesh:SetActive(true)
     end
-    local min = self.Min or 1
-    local max = self.Max or #self.Meshes
+    local min = self.removeMin or 1
+    local max = self.removeMax or 1
     min = math.min(min, #self.Meshes)
     max = math.min(max, #self.Meshes)
     local num_meshes = math.random(min, max)
-    print('  ' .. 'Randomizing dynamic mesh group ' .. self.Name .. ' by selecting ' .. num_meshes .. ' meshes (Min=' .. min .. '; Max=' .. max .. ')...')
+    print('  ' .. 'Randomizing dynamic mesh group ' .. self.Name .. ' by selecting ' .. num_meshes .. ' meshes (removeMin=' .. min .. '; removeMax=' .. max .. ') to deactivate...')
     local selected = {}
     while num_meshes > 0 do
         local idx_mesh = math.random(1, #self.Meshes)
         if selected[idx_mesh] == nil then
             selected[idx_mesh] = true
-            self.Meshes[idx_mesh]:SetVisible(true)
-            self.Meshes[idx_mesh]:SetActive(true)
+            self.Meshes[idx_mesh]:SetVisible(false)
+            self.Meshes[idx_mesh]:SetActive(false)
             print('      ' .. 'Mesh ' .. self.Meshes[idx_mesh]:GetName() .. ' selected')
             num_meshes = num_meshes - 1
         end
