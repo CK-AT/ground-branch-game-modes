@@ -3,6 +3,7 @@ local Callback = require('common.Callback')
 local Trigger = require('Ambush.Trigger')
 local BlastZone = require('Ambush.BlastZone')
 local Mine = require('Ambush.Mine')
+local DynamicMeshGroup = require('Ambush.DynamicMeshGroup')
 
 local AmbushManager = {
 }
@@ -21,6 +22,7 @@ function AmbushManager:Create(teamTag)
     self.MinesByName = {}
     self.MinesByDefuserName = {}
     self.BlastZonesByName = {}
+    self.MeshGroupsByName = {}
     print('Gathering blast zones...')
     local BlastZones = gameplaystatics.GetAllActorsWithTag('BlastZone')
     local count = 0
@@ -64,6 +66,20 @@ function AmbushManager:Create(teamTag)
         end
     end
     print('Found a total of ' .. count .. ' ambush triggers.')
+    print('Gathering dynamic meshes...')
+    count = 0
+    local Meshes = gameplaystatics.GetAllActorsWithTag('DynamicMesh')
+    for _, Actor in ipairs(Meshes) do
+        local group = DynamicMeshGroup:Create(self, Actor)
+        local known_group = self.MeshGroupsByName[group:GetName()]
+        if known_group == nil then
+            self.MeshGroupsByName[group:GetName()] = group
+            count = count + 1
+        else
+            known_group:merge(group)
+        end
+    end
+    print('Found a total of ' .. count .. ' dynamic mesh groups.')
     print('Performing trigger post init tasks...')
     for _, CurrTrigger in pairs(self.TriggersByName) do
         CurrTrigger:PostInit()
@@ -168,6 +184,10 @@ function AmbushManager:Activate(GameTrigger)
                 Mine:Activate()
             end
             Mine:SyncState()
+        end
+        print('Randomizing dynamic meshes...')
+        for _, Group in pairs(self.MeshGroupsByName) do
+            Group:Randomize()
         end
     else
         local Trigger = self.TriggersByName[actor.GetName(GameTrigger)]

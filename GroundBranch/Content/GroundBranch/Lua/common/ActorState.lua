@@ -6,6 +6,7 @@ ActorState.__index = ActorState
 function ActorState:Create(Actor)
     local self = setmetatable({}, ActorState)
     self.Actor = Actor
+    self.Name = actor.GetName(Actor)
     self.IsActive = nil
     self.IsActivePrev = nil
     self.IsVisible = nil
@@ -13,6 +14,10 @@ function ActorState:Create(Actor)
     self.IsCollidable = nil
     self.IsCollidablePrev = nil
     return self
+end
+
+function ActorState:GetName()
+    return self.Name
 end
 
 function ActorState:Sync()
