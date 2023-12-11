@@ -55,6 +55,7 @@ function DynamicMeshGroup:Randomize()
     for _, mesh in ipairs(self.Meshes) do
         mesh:SetVisible(true)
         mesh:SetActive(true)
+        mesh:SetCollidable(true)
     end
     local min = self.removeMin or 1
     local max = self.removeMax or 1
@@ -69,6 +70,7 @@ function DynamicMeshGroup:Randomize()
             selected[idx_mesh] = true
             self.Meshes[idx_mesh]:SetVisible(false)
             self.Meshes[idx_mesh]:SetActive(false)
+            self.Meshes[idx_mesh]:SetCollidable(false)
             print('      ' .. 'Mesh ' .. self.Meshes[idx_mesh]:GetName() .. ' selected')
             num_meshes = num_meshes - 1
         end
