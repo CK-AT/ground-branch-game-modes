@@ -5,13 +5,9 @@ Key,SourceString,Comment
 "summary_BluForEliminated","Your unit was wiped out.","AAR"
 "missionsetting_showremaining","Show remaining threats","Opsboard"
 "format_RemainingOpfor","{NumberRemaining} {NumberRemaining}|plural(one=enemy,other=enemies) remaining",formatted string
-"missionsetting_aimaxconcurrentcount","Maximum Number Of Concurrent AI","Opsboard"
-"missionsetting_debugmessagelevel","Debug Message Level","Opsboard"
-"missionsetting_triggeractivationchance","Default Trigger Activation Chance","Opsboard"
-"missionsetting_minambushdelay","Default Minimum Ambush Delay","Opsboard"
-"missionsetting_maxambushdelay","Default Maximum Ambush Delay","Opsboard"
-"missionsetting_minambushsize","Default Minimum Ambush Size","Opsboard"
-"missionsetting_maxambushsize","Default Maximum Ambush Size","Opsboard"
-"missionsetting_triggersenabled","Ambush Triggers","Opsboard"
-"missionsetting_triggersenabled_0","Disabled","Opsboard"
-"missionsetting_triggersenabled_1","Enabled","Opsboard"
+"missionsetting_bumrushmode","Bum rush mode","Opsboard"
+"missionsetting_bumrushmode_0","Disabled",
+"missionsetting_bumrushmode_1","Last enemies hunt you",
+"missionsetting_useaihotspots","Enemy hot spots","Opsboard"
+"missionsetting_useaihotspots_0","Disabled",
+"missionsetting_useaihotspots_1","Enabled",

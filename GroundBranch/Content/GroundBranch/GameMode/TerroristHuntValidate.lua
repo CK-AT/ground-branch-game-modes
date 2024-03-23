@@ -28,14 +28,14 @@ function terroristhuntvalidate:ValidateLevel()
 	
 	------- phase 1 - check priority tags of the ai spawns, make sure they are allocated evenly
 
-	local AllSpawns = gameplaystatics.GetAllActorsOfClass('GroundBranch.GBAISpawnPoint')
+	local AllAISpawns = gameplaystatics.GetAllActorsOfClass('GroundBranch.GBAISpawnPoint')
 
 
-	if #AllSpawns == 0 then
+	if #AllAISpawns == 0 then
 		table.insert(ErrorsFound, "No AI spawns found")
 	else
-		if #AllSpawns < 30 then
-			table.insert(ErrorsFound, "Only " .. #AllSpawns .. " AI spawn points provided. This is a little low - aim for at least 30 and ideally 50+")
+		if #AllAISpawns < 30 then
+			table.insert(ErrorsFound, "Only " .. #AllAISpawns .. " AI spawn points provided. This is a little low - aim for at least 30 and ideally 50+")
 		end
 		
 		local CurrentPriorityGroup = 1
@@ -60,10 +60,10 @@ function terroristhuntvalidate:ValidateLevel()
 					
 					if CurrentGroupTotal == 0 then
 						table.insert(ErrorsFound, "(Non ideal) No spawns found within priority range " .. StartPriority .. " to " .. EndPriority)
-					elseif CurrentPriorityGroup > 1 and CurrentGroupTotal < 0.15 * #AllSpawns then
+					elseif CurrentPriorityGroup > 1 and CurrentGroupTotal < 0.15 * #AllAISpawns then
 						-- it's ok if the first priority group is small
-						local pcnumber = tonumber(string.format("%.0f", 100 * (CurrentGroupTotal / #AllSpawns)))
-						table.insert(ErrorsFound, "(Non ideal) Relatively few spawns (" .. CurrentGroupTotal .. " of " .. #AllSpawns ..", or " .. pcnumber.. "% of total) are assigned a priority within priority range " .. StartPriority .. " to " .. EndPriority)
+						local pcnumber = tonumber(string.format("%.0f", 100 * (CurrentGroupTotal / #AllAISpawns)))
+						table.insert(ErrorsFound, "(Non ideal) Relatively few spawns (" .. CurrentGroupTotal .. " of " .. #AllAISpawns ..", or " .. pcnumber.. "% of total) are assigned a priority within priority range " .. StartPriority .. " to " .. EndPriority)
 					end
 
 					CurrentPriorityGroup = CurrentPriorityGroup + 1
@@ -71,12 +71,23 @@ function terroristhuntvalidate:ValidateLevel()
 				end
 			end
 		
-			for j, SpawnPoint in ipairs(AllSpawns) do
+			for j, SpawnPoint in ipairs(AllAISpawns) do
 				if actor.HasTag(SpawnPoint, PriorityTag) then
 					CurrentGroupTotal = CurrentGroupTotal + 1
 				end
 			end
 
+		end
+	end
+	
+	-- new stand-alone collision check for AI spawns
+
+	for i, TestActor in ipairs(AllAISpawns) do
+		if actor.IsColliding(TestActor) then
+			table.insert(ErrorsFound, "Warning: AI spawn point '@" .. actor.GetName(TestActor) .. "' may be colliding with the map")
+		end
+		if not ai.IsOnNavMesh(TestActor) then
+			table.insert(ErrorsFound, "Warning: AI spawn point '@" .. actor.GetName(TestActor) .. "' does not appear to be contacting the navmesh")
 		end
 	end
 	
@@ -88,7 +99,7 @@ function terroristhuntvalidate:ValidateLevel()
 	local SquadIdProblem = false
 	local SquadNameProblem = false
 
-	for _, SpawnPoint in ipairs(AllSpawns) do
+	for _, SpawnPoint in ipairs(AllAISpawns) do
 		SpawnInfo = ai.GetSpawnPointInfo(SpawnPoint)
 		
 		local CurrentSquad
@@ -222,6 +233,17 @@ function terroristhuntvalidate:ValidateLevel()
 				table.insert(ErrorsFound, "At least one player start has a blank group name")
 			end
 		end
+		
+		-- new stand-alone collision check for player starts
+
+		for i, TestActor in ipairs(AllPlayerStarts) do
+			if actor.IsColliding(TestActor) then
+				table.insert(ErrorsFound, "Warning: player start '@" .. actor.GetName(TestActor) .. "' may be colliding with the map")
+			end
+			if not ai.IsOnNavMesh(TestActor) then
+				table.insert(ErrorsFound, "Warning: player start '@" .. actor.GetName(TestActor) .. "' does not appear to be contacting the navmesh")
+			end
+		end
 	end
 
 	--- phase 3 check guard groups
@@ -235,7 +257,7 @@ function terroristhuntvalidate:ValidateLevel()
 	for _,GuardPoint in ipairs(AllGuardPoints) do
 		GuardPointName = ai.GetGuardPointName(GuardPoint)
 		if GuardPointName == 'None' then
-			table.insert(ErrorsFound, "AI guard point '" .. actor.GetName(GuardPoint) .. "' has group name set to None")
+			table.insert(ErrorsFound, "AI guard point '@" .. actor.GetName(GuardPoint) .. "' has group name set to None")
 		else
 			if GuardPointNames[GuardPointName] == nil then
 				GuardPointNames[GuardPointName] = false
@@ -257,12 +279,26 @@ function terroristhuntvalidate:ValidateLevel()
 	end
 
 	if DumpGuardPoints then
+		local GuardPointList = {}
+
 		print("GuardPoints")
 		print("-----------")
 		for GuardPointName, _ in pairs(GuardPointNames) do
-			print (GuardPointName)
+			--print (GuardPointName)
+			-- create an array where guard point names are the values, not the keys - then we can sort it
+			table.insert(GuardPointList, GuardPointName)
 		end
 		
+		local function reversesort_alphabetical(a, b)
+		return a:lower() > b:lower()
+		end
+		table.sort(GuardPointList, reversesort_alphabetical)
+	
+		for _, GuardPointName in ipairs(GuardPointList) do
+			print (GuardPointName)
+		end
+	
+		print(" ")
 		print("Guard squads")
 		print("------------")
 		for _, CurrentSquad in pairs(SquadsBySquadId) do
@@ -272,25 +308,80 @@ function terroristhuntvalidate:ValidateLevel()
 		end
 	end
 
-	---- phase 4: quick check of patrol routes
-	local AllPatrolRoutes = gameplaystatics.GetAllActorsOfClass('GroundBranch.GBAIPatrolRoute')
-	if #AllPatrolRoutes == 0 then
-		table.insert(ErrorsFound, "Warning: no AI patrol routes found")
+	-- new stand-alone collision check for guardpoints
+
+	for i, TestActor in ipairs(AllGuardPoints) do
+		if actor.IsColliding(TestActor) then
+			table.insert(ErrorsFound, "Warning: AI guard point '@" .. actor.GetName(TestActor) .. "' may be colliding with the map")
+		end
+		if not ai.IsOnNavMesh(TestActor) then
+			table.insert(ErrorsFound, "Warning: AI guard point '@" .. actor.GetName(TestActor) .. "' does not appear to be contacting the navmesh")
+		end
 	end
 
-	---- phase 5: quick check of new AI hotspots (new in 1033)
+
+	---- phase 4: quick check of new AI hotspots (new in 1033)
 	local AllHotspots = gameplaystatics.GetAllActorsOfClass('GroundBranch.GBAIHotspot')
 	-- it is not mandatory to have hotspots - probably best avoided on small maps
 	
 	for _, Hotspot in ipairs(AllHotspots) do
 		local HotspotName = ai.GetAIHotspotName(Hotspot) 
 		if HotspotName == nil or HotspotName == "" or HotspotName == "None" then
-			table.insert(ErrorsFound, "AI hotspot '" .. actor.GetName(Hotspot) .. "' does not have a Hotspot name set")
+			table.insert(ErrorsFound, "AI hotspot '@" .. actor.GetName(Hotspot) .. "' does not have a Hotspot name set")
 		end
 	end
 	
 	if #AllHotspots == 1 then
 		table.insert(ErrorsFound, "Only one AI hotspot found. Are you sure about that?")
+	end
+
+
+	---- phase 5: check patrol routes
+	local AllPatrolRoutes = gameplaystatics.GetAllActorsOfClass('GroundBranch.GBAIPatrolRoute')
+	if #AllPatrolRoutes == 0 then
+		table.insert(ErrorsFound, "Warning: no AI patrol routes found")
+	end
+
+	-- new stand-alone collision check for patrol routes
+
+	for i, TestActor in ipairs(AllPatrolRoutes) do
+		if actor.IsColliding(TestActor) then
+			table.insert(ErrorsFound, "Warning: AI patrol route '@" .. actor.GetName(TestActor) .. "' may be colliding with the map")
+		end
+		if not ai.IsOnNavMesh(TestActor) then
+			table.insert(ErrorsFound, "Warning: AI patrol route '@" .. actor.GetName(TestActor) .. "' does not appear to be contacting the navmesh")
+		end
+	end
+
+	-- new!! check line of sight between (centre of) patrol route actors
+	local PatrolRoutesChecked = {}
+	local IgnoreActors = {}
+	
+	-- create ignore list containing all AI spawns and all AI patrol routes. Not going to be super efficient but necessary.
+	-- (AI spawns are often placed near/between patrol points)
+	for _, Actor in ipairs(AllAISpawns) do
+		table.insert(IgnoreActors, Actor)
+	end
+	for _, Actor in ipairs(AllPatrolRoutes) do
+		table.insert(IgnoreActors, Actor)
+	end
+	for _, Actor in ipairs(AllHotspots) do
+		table.insert(IgnoreActors, Actor)
+	end
+
+	for _, PatrolRouteActor in ipairs(AllPatrolRoutes) do
+		local LinkedPatrolRouteActors = gameplaystatics.GetPatrolRouteLinkedActors(PatrolRouteActor)
+		--print("Checking " .. #LinkedPatrolRouteActors .. " connections for patrol route '@" .. actor.GetName(PatrolRouteActor) .. "'")
+		PatrolRoutesChecked[actor.GetName(PatrolRouteActor)] = true
+		
+		for __, LinkedPatrolRouteActor in ipairs(LinkedPatrolRouteActors) do
+			if PatrolRoutesChecked[actor.GetName(LinkedPatrolRouteActor)] == nil then
+				local VisibilityTrace = gameplaystatics.TraceVisible( actor.GetLocation(PatrolRouteActor), actor.GetLocation(LinkedPatrolRouteActor), IgnoreActors, true) 
+				if VisibilityTrace ~= nil then
+					table.insert(ErrorsFound, "AI patrol route '@" .. actor.GetName(PatrolRouteActor) .. "' appears not to have clear sight of patrol route '" .. actor.GetName(LinkedPatrolRouteActor) .. "'")
+				end
+			end
+		end
 	end
 
 	return ErrorsFound

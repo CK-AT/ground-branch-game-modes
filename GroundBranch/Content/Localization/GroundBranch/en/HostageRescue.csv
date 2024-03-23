@@ -1,22 +1,109 @@
 Key,SourceString,Comment
 HostageRescue,Hostage Rescue,
-objective_DefendObjective,Defend the laptop.,Opsboard
-objective_EliminateAttackers,Eliminate the attacking team.,Opsboard
-objective_CaptureObjective,Locate and hack the laptop.,Opsboard
-objective_EliminateDefenders,Eliminate the defending team.,Opsboard
-summary_DefendObjective,Information was kept safe.,AAR
-summary_CaptureObjective,Information was extracted from laptop.,AAR
+HostageRescueRulesOfEngagement1,"One member of the attacking team has been taken hostage in one of the buildings, selected at random by the game mode. The defenders' movements are restricted to within that building, unless and until the hostage escapes the building. Defenders can lead the hostage around the building or simply hold them in place, and they can intimidate the hostage into silence by pointing a gun at the hostage, but you will need two defenders to do both at the same time.\r\nAttackers will have to find the building where the hostage is being held, possibly with the assistance of the hostage making some noise. Attackers must then breach the building and rescue the hostage. If the hostage has their cuffs released by the attackers, they will regain a full range of movement and team comms. To win the round, the attacking team must escort the hostage to an extraction point with at least one other attacker, or alternatively they can eliminate the defending team.\r\nTo win the round, the defending team must eliminate all attackers, or survive the onslaught until the time runs out. Any team that kills the hostage will instantly lose the match. Careful with those frags, people.",
+HostageRescueRulesOfEngagement2,"If there are not enough players to start a Hostage Rescue round, then the stripped down Building Assault mode will start, in which the defenders are still restricted to a building, but there is no hostage and the teams must simply eliminate each other. The gloves are off in this mode!\r\nThe game mode uses quite aggressive autobalancing to maintain fair teams, so make sure both your red team and blue team kits are up to date.",
+BuildingAssault,Building Assault,
+objective_DefendHostage,Prevent extraction of the hostage.,Hostage Rescue primary objective for defenders
+objective_EliminateAttackers,Eliminate the attacking team.,Hostage Rescue and Building Assault secondary objective for defenders
+objective_SurviveRound,Survive the round.,Building Assault primary objective for defenders
+objective_ExtractHostage,Extract the hostage.,Hostage Rescue primary objective for attackers
+objective_EliminateDefenders,Eliminate the defending team.,Hostage Rescue and Building Assault secondary objective for attackers
+summary_DefendedHostage,Hostage was kept safe by defenders.,AAR
+summary_ExtractedHostage,Hostage was extracted safely.,AAR
+summary_AttackersKilledHostage,The attacking team killed the hostage.,AAR
+summary_DefendersKilledHostage,The defending team killed the hostage.,AAR
+summary_HostageKilledHostage,The hostage killed themselves.,AAR
 summary_DefendersEliminated,Defending team was eliminated.,AAR
 summary_AttackersEliminated,Attacking team was eliminated.,AAR
 summary_BothEliminated,Both teams were wiped out.,AAR
-roundstage_BlueDefenderSetup_1,Prepare to defend the laptop.,Opsboard
-roundstage_BlueDefenderSetup_2,Defenders are setting up.\r\nPrepare to locate and hack the laptop.,Opsboard
-roundstage_RedDefenderSetup_1,Defenders are setting up.\r\nPrepare to locate and hack the laptop.,Opsboard
-roundstage_RedDefenderSetup_2,Prepare to defend the laptop.,Opsboard
-gamemessage_SwapAttacking,Teams have been swapped.\r\nYou are now attacking.,
-gamemessage_SwapDefending,Teams have been swapped.\r\nYou are now defending.,
+summary_DefendersSurvived,The defending team survived the round.,AAR
+summary_DefendersKilledArmedHostage,The defenders killed an armed hostage.,AAR
+roundstage_BuildingAssaultSetup_1,Defenders are preparing.,Opsboard
+roundstage_BuildingAssaultSetup_2,Defenders are preparing.,Opsboard
+roundstage_BuildingAssaultInProgress_1,The assault has begun.,Opsboard
+roundstage_BuildingAssaultInProgress_2,The assault has begun.,Opsboard
+roundstage_HostageRescueSetup_1,Defenders are preparing their defense.,Opsboard
+roundstage_HostageRescueSetup_2,Defenders are preparing their defense.,Opsboard
+roundstage_HostageRescueInProgress_1,The hostage rescue is in progress.,Opsboard
+roundstage_HostageRescueInProgress_2,The hostage rescue is in progress.,Opsboard
+gamemessage_NotEnoughPlayersForHostageRescue,Currently not enough players for Hostage Rescue.\r\nGame mode is "Building Assault" in the meantime.,
+gamemessage_WaitForRoundStartAttacker,You are ATTACKING\r\nWaiting for setup phase to begin,
+gamemessage_WaitForRoundStartHostage,You are a HOSTAGE and your team are rescuing you\r\nWaiting for setup phase to begin,
+gamemessage_WaitForRoundStartDefender,You are DEFENDING\r\nWaiting for setup phase to begin,
+gamemessage_SwapAttacking,Teams have been swapped.\r\nYou are now attacking,
+gamemessage_SwapDefending,Teams have been swapped.\r\nYou are now defending,
+gamemessage_StillAttacking,Round was restarted.\r\nYou are still attacking,
+gamemessage_StillDefending,Round was restarted.\r\nYou are still defending,
+gamemessage_HostageDiedOrLeft,The hostage player died or left the game,
+gamemessage_HostageLeftGame,The hostage player left the game,
+gamemessage_HostageRescueBeginSetupAttack,The other team is guarding the hostage. Rescue and extract!,
+gamemessage_HostageRescueBeginSetupDefend,Your team is guarding the hostage. Do not let them escape or be taken.,
+gamemessage_HostageRescueBeginSetupHostage,YOU are the hostage\r\nTry to escape while the defenders are not looking.,
+gamemessage_HostageRescueBeginSetupAttackSmallText,The other team is preparing their defenses.,
+gamemessage_HostageRescueBeginSetupDefendSmallText,Prepare your defenses!,
+gamemessage_HostageRescueBeginSetupHostageSmallText,YOU are the hostage.,
+gamemessage_HostageRescueBeginAttack,Go get the hostage.,
+gamemessage_HostageRescueBeginDefend,Keep the hostage in your sights and stop the attack.,
+gamemessage_HostageRescueBeginHostage,Stay safe.,
+gamemessage_BuildingAssaultSetupAttack,Stand by to assault the building,
+gamemessage_BuildingAssaultSetupDefend,Defend the attack on your building,
+gamemessage_BuildingAssaultSetupAttackSmallText,Take the building,
+gamemessage_BuildingAssaultSetupDefendSmallText,Defend the building,
+gamemessage_BuildingAssaultAttack,Take the building and wipe out all defenders!,
+gamemessage_BuildingAssaultDefend,Defend the building from the attackers!,
+gamemessage_MovedToAttackTeam,You have been moved to the attacking team to balance out teams!,
+gamemessage_MovedToDefendTeam,You have been moved to the defending team to balance out teams!,
+gamemessage_PlayerMovedOutOfYourTeam,One or more players were moved out of your team to balance teams,not used for now because want to display specific number of people moved
+gamemessage_PlayerMovedIntoYourTeam,One or more players were moved into your team to balance teams,not used for now because want to display specific number of people moved
+gamemessage_PrepareToAttack,You are an attacker -- the round will begin in a moment.,
+gamemessage_PrepareToDefend,You are a defender -- the round will begin in a moment.,
+gamemessage_YouAreAttackerRed,You are an attacker on the RED team.,
+gamemessage_YouAreAttackerBlue,You are an attacker on the BLUE team.,
+gamemessage_YouAreDefenderRed,You are a defender on the RED team.,
+gamemessage_YouAreDefenderBlue,You are a defender on the BLUE team.,
+gamemessage_LastStandActivated,Last Stand mode activated!,
+gamemessage_PlayersMovedIntoTeam1,1 player was moved into your team to balance teams.,
+gamemessage_PlayersMovedIntoTeam2,2 players were moved into your team to balance teams.,
+gamemessage_PlayersMovedIntoTeam3,3 players were moved into your team to balance teams.,
+gamemessage_PlayersMovedIntoTeam4,4 players were moved into your team to balance teams.,
+gamemessage_PlayersMovedOutOfTeam1,1 player was moved out of your team to balance teams.,
+gamemessage_PlayersMovedOutOfTeam2,2 players were moved out of your team to balance teams.,
+gamemessage_PlayersMovedOutOfTeam3,3 players were moved out of your team to balance teams.,
+gamemessage_PlayersMovedOutOfTeam4,4 players were moved out of your team to balance teams.,
+gamemessage_RoundRestarted,Round will restart in a moment.,
+gamemessage_CantRestartRoundNow,Restart round requested but not a valid time to do it.\r\nRequest ignored.,
+gamemessage_BlueWinsMatch,BLUE TEAM wins the match!,
+gamemessage_RedWinsMatch,RED TEAM wins the match!,
+gamemessage_MatchIsTie,The match is a TIE!,
+gamemessage_ScoresStandby,Stand by for scores...,
+gamemessage_NextRoundDecider,The next round will decide a winner.,
+gamemessage_NoTeamScores,No team scores awarded,
+gamemessage_NoPlayerScores,No player scores awarded,
+gamemessage_NoScoreForYou,No score was recorded for you,
+gamemessage_KickedCosNotClicked,You are being kicked for repeatedly not selecting an insertion point. Click in next time!,
+gamemessage_WarnedCosNotClicked,"You failed to select an insertion point. Next time, please click the board when others do.",
+gamemessage_TeamExfil,"You need to be accompanied by at least one attacker to exfiltrate.",
+gamemessage_HostageIsArmed,"Careful! You have armed yourself, and can now be killed by the defenders.",
 missionsetting_autoswap_0,No,
 missionsetting_autoswap_1,Yes,
 missionsetting_autoswap,Auto-swap teams,
 missionsetting_defendersetuptime,Defender setup time (seconds),Opsboard
 missionsetting_capturetime,Capture time (seconds),Opsboard
+missionsetting_balanceteams,Balance teams each round,
+missionsetting_balanceteams_0,No,
+missionsetting_balanceteams_1,Yes (light touch),
+missionsetting_balanceteams_2,Yes (aggressive),
+missionsetting_balanceteams_3,Yes (always),
+missionsetting_forcehostagerescue,Force game mode,
+missionsetting_forcehostagerescue_0,No,
+missionsetting_forcehostagerescue_1,Hostage Rescue,
+missionsetting_forcehostagerescue_2,Building Assault,
+missionsetting_extractanywhere,Extract anywhere,
+missionsetting_extractanywhere_0,No,
+missionsetting_extractanywhere_1,Yes,
+missionsetting_restrictdefenders,Restrict defenders,
+missionsetting_restrictdefenders_0,No,
+missionsetting_restrictdefenders_1,Yes,
+missionsetting_restrictnades,Restrict grenades,
+missionsetting_restrictnades_0,No,
+missionsetting_restrictnades_1,Yes,

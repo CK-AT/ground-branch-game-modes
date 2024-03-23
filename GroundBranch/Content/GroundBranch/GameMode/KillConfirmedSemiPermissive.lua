@@ -120,6 +120,8 @@ function Mode:PreInit()
 	if self.AISpawns.Uprise:GetTotalSpawnPointsCount() == 0 then
 		self.AISpawns.Uprise = MSpawnsGroups:Create(self.AISpawnDefs.Uprise.OldTag)
 	end
+--	self.Teams.CIVUnarmed:SetMaxHealings(1)
+--	self.Teams.CIVArmed:SetMaxHealings(1)
 	self.Teams.CIVUnarmed:SetAttitude(self.Teams.BluFor, 'Neutral')
 	self.Teams.CIVUnarmed:SetAttitude(self.Teams.OpFor, 'Friendly', true)
 	self.Teams.CIVUnarmed:SetAttitude(self.Teams.SuicideSquad, 'Neutral', true)

@@ -16,6 +16,8 @@ Key,SourceString,Comment
 "gamemode_description_training","[Solo/Co-Op] Practice your shooting and CQB skills individually or collectively in The Farm's multiple ranges and shoothouses.",""
 "gamemode_uplink","Uplink",""
 "gamemode_description_uplink","[PvP] Defenders guard an intel device in one of several possible locations, as Attackers must locate and hack it to win.",""
+"gamemode_defuse","Defuse",""
+"gamemode_description_defuse","[PvE] Attackers have to find the bombs and defuse them all before the timer runs out.",used in mission selection screen
 "missionsetting_timeofday","Insertion time","Opsboard"
 "missionsetting_trainingtimeofday","Set local time","Opsboard"
 "missionsetting_roundtime","Time limit","Opsboard"
@@ -44,35 +46,27 @@ Key,SourceString,Comment
 "missionsetting_quickteamkits_2","Plain v Camo","Opsboard"
 "missionsetting_quickteamkits_3","Blue v Red","Opsboard"
 "missionsetting_minplayers","Minimum player count",
-"missionsetting_maxhealings","Maximum healings per player","Opsboard"
-"missionsetting_healingmode","Healing Mode","Opsboard"
-"missionsetting_healingmode_0","In Place","Opsboard"
-"missionsetting_healingmode_1","MedEvac","Opsboard"
 "aisetting_maxturnrate","How quickly the AI can turn (degrees per second)",
 "aisetting_maxsprintturnrate","How quickly the AI can turn while sprinting (degrees per second)",
-"aisetting_maxheadlookrate","How quickly the AI can look around separately to aiming (degrees per second)",
-"aisetting_recoilcompensationskill","How much recoil the AI compensates for when aiming (0-1)",
 "aisetting_suppressionrecoveryrate","How quickly the suppression value is reduced (per second)",
 "aisetting_ontargetthreshold","Limit while aiming at a target to be considered 'on target' (+/- degrees)",
 "aisetting_centerofmassbone","Bone that AI considers a characters center of mass for aiming purposes",
-"aisetting_deliberatemisstime","How long the AI should deliberately miss for, when engaging new target (in seconds)",
-"aisetting_deliberatemissblendouttime","Time over which a deliberate miss is blended out (in seconds)",
-"aisetting_deliberatemissdistancethreshold","Distance at which a deliberate miss is blended away because too close (min 100 = 1m)",
-"aisetting_aimerrorupdateinterval","How often the aim error alphas should be changed",
+"aisetting_maxtimeontarget","How much time has to pass (in seconds) before the aim miss is set to 0 (for time deviation), deviation based on distance will always be added to this",
+"aisetting_maxtimedeviation","The maximum deviation (in degrees) that is applied when the AI just spotted the player and time deviation is at its maximum",
+"aisetting_maxdistancedeviation","Maximum deviation (in degrees) due to distance",
+"aisetting_mindistanceforpenalty","Minimum distance for distance penalty (in cm)",
+"aisetting_maxdistanceforpenalty","Maximum distance for max distance penalty (in cm)",
+"aisetting_aimerrorupdateinterval","How often we should change the aim error alphas",
 "aisetting_reactiontimebase","Time it takes to react to just sensed (+/- ReactionTimeRandom) in seconds",
 "aisetting_reactiontimerandom","How much to randomise ReactionTimeBase by in +/- seconds",
-"aisetting_idlehearingthreshold","Threshold (in dB SPL) for idle AI to react to suspicious sounds",
-"aisetting_alerthearingthreshold","Threshold (in dB SPL) for alert AI to react to suspicious sounds",
-"aisetting_idleaffiliationsightthreshold","Threshold for idle AI to determine that a sighted player is hostile",
-"aisetting_alertaffiliationsightthreshold","Threshold for alert AI to determine that a sighted player is hostile",
-"aisetting_idlesuspicionsightthreshold","Threshold for idle AI to become suspicious of a player in view",
-"aisetting_alertsuspicionsightthreshold","Threshold for alert AI to become suspicious of a player in view",
 "aisetting_maxsemiautoburst","Max amount of rounds an AI can fire off in rapid succession in semi-auto firing modes",
 "aisetting_minfullautoburst","Min amount of rounds an AI can fire off in rapid succession in full-auto firing modes",
 "aisetting_maxfullautoburst","Max amount of rounds an AI can fire off in rapid succession in full-auto firing modes",
 "aisetting_mindelaybetweenbursts","Min delay after last shot is fired in a burst before AI can start another burst",
 "aisetting_maxdelaybetweenbursts","Max delay after last shot is fired in a burst before AI can start another burst",
 "aisetting_leanchance","How likely AI is to lean when able (0.0 - 1.0)",
+"aisetting_tracerfrequency","AI to fire a tracer round after how many rounds? (0=default for weapon, 1=always, 2=every other round, ...)",
+"aisetting_muzzleflashprobability","Probability that AI shots will have a muzzle flash (0.0 = never, 1.0 = always, -1.0 = use default)",
 "gamemessage_trainingresupplynow","Killhouse round reset\r\nRemember to resupply at the weapon table",""
 "MissionComplete","MISSION COMPLETE","AAR"
 "MissionFailed","MISSION FAILED","AAR"
