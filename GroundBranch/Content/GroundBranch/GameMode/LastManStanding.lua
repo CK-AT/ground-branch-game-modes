@@ -1,9 +1,37 @@
 local lastmanstanding = {
-	UseReadyRoom = true,
-	UseRounds = true,
-	StringTables = { "Last Man Standing" },
+	StringTables = { "LastManStanding" },
+
 	GameModeAuthor = "(c) BlackFoot Studios, 2021-2022",
 	GameModeType = "PVP FFA",
+	
+	---------------------------------------------
+	----- Game Mode Properties ------------------
+	---------------------------------------------
+
+	UseReadyRoom = true,
+	UseRounds = true,
+	VolunteersAllowed = false,
+	
+	---------------------------------------------
+	----- Default Game Rules --------------------
+	---------------------------------------------
+
+	AllowUnrestrictedRadio = false,
+	AllowUnrestrictedVoice = false,
+	SpectateForceFirstPerson = true,
+	SpectateFreeCam = false,
+	SpectateEnemies = false,
+	
+	---------------------------------------------
+	------- Player Teams ------------------------
+	---------------------------------------------
+	
+	-- not used in FFA
+
+	---------------------------------------------
+	---- Mission Settings -----------------------
+	---------------------------------------------
+	
 	Settings = {
 		RoundTime = {
 			Min = 3,
@@ -30,6 +58,11 @@ local lastmanstanding = {
             AdvancedSetting = true,
         },
 	},
+	
+		
+	---------------------------------------------
+	---- 'Global' Variables ---------------------
+	---------------------------------------------
 	
 	PlayerStarts = {},
 	RecentlyUsedPlayerStarts = {},
@@ -129,8 +162,6 @@ function lastmanstanding:GetBestSpawn()
 end
 
 function lastmanstanding:PlayerReadyStatusChanged(PlayerState, ReadyStatus)
-    print(player.GetName(PlayerState) .. " ready status set to " .. ReadyStatus)
-    
 	if ReadyStatus == "DeclaredReady" then
 		timer.Set("CheckReadyUp", self, self.CheckReadyUpTimer, 0.1, false)
 	else
@@ -144,10 +175,10 @@ end
 
 function lastmanstanding:PlayerCanEnterPlayArea(PlayerState)
 	if gamemode.GetRoundStage() == "InProgress" then
-        print("lastmanstanding:PlayerCanEnterPlayArea(): " .. player.GetName(PlayerState) .. " false") 
+        --print(lastmanstanding:PlayerCanEnterPlayArea(): " .. player.GetName(PlayerState) .. " false") 
 		return false
     end
-    print("lastmanstanding:PlayerCanEnterPlayArea(): " .. player.GetName(PlayerState) .. " true") 
+    --print(lastmanstanding:PlayerCanEnterPlayArea(): " .. player.GetName(PlayerState) .. " true") 
     return true 
 end
 
@@ -155,13 +186,13 @@ function lastmanstanding:PlayerEnteredPlayArea(PlayerState)
     -- Nothing to do here unless we should start with more then a single life.
     if (self.Settings.StartingLives.Value > 1) then
         player.SetLives(PlayerState, self.Settings.StartingLives.Value)
-    	print(player.GetName(PlayerState) ..  " lives have been set to " .. player.GetLives(PlayerState))
+    	--print(player.GetName(PlayerState) ..  " lives have been set to " .. player.GetLives(PlayerState))
         player.SetAllowedToRestart(PlayerState, true)
     end
 end
 
 function lastmanstanding:OnRoundStageSet(RoundStage)
-	print("lastmanstanding:OnRoundStageSet() - new stage " .. RoundStage)
+	--print(lastmanstanding:OnRoundStageSet() - new stage " .. RoundStage)
 	if RoundStage == "WaitingForReady" then
 		timer.ClearAll()
 		gamemode.ClearGameStats()
@@ -191,13 +222,13 @@ function lastmanstanding:OnCharacterDied(Character, CharacterController, KillerC
 		    PlayerLives = PlayerLives - 1
 		    player.SetLives(PlayerState, PlayerLives)
 
-        	print(player.GetName(PlayerState) ..  " died - lives remaining " .. player.GetLives(PlayerState))
+        	--print(player.GetName(PlayerState) ..  " died - lives remaining " .. player.GetLives(PlayerState))
 			
             if PlayerLives > 0 then
-                print(player.GetName(PlayerState) .. " can still respawn")
+                --print(player.GetName(PlayerState) .. " can still respawn")
                 player.SetAllowedToRestart(PlayerState, true)
             else
-                print(player.GetName(PlayerState) .. " can no longer respawn")
+                --print(player.GetName(PlayerState) .. " can no longer respawn")
                 player.SetAllowedToRestart(PlayerState, false)
 	    	end
 	    	
@@ -222,7 +253,6 @@ function lastmanstanding:OnRoundStageTimeElapsed(RoundStage)
     	end		
 
 		gamemode.SetRoundStage("PostRoundWait")
-		
 		return true
 	end
 end
@@ -246,13 +276,13 @@ function lastmanstanding:PlayerBecomesSpectator(Player)
 end
 
 function lastmanstanding:CheckReadyUpTimer()
-    print("lastmanstanding:CheckReadyUpTimer() : RoundStage: " .. gamemode.GetRoundStage())
+    --print(lastmanstanding:CheckReadyUpTimer() : RoundStage: " .. gamemode.GetRoundStage())
 
 	if gamemode.GetRoundStage() == "WaitingForReady" or gamemode.GetRoundStage() == "ReadyCountdown" then
 		local ReadyPlayerTeamCounts = gamemode.GetReadyPlayerTeamCounts(true)
 		local PlayersReady = ReadyPlayerTeamCounts[0]
 
-        print("PlayersReady: " .. PlayersReady)
+        --print(PlayersReady: " .. PlayersReady)
 
 		local MinReady = 2
 		

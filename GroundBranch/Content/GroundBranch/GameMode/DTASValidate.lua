@@ -3,7 +3,11 @@ local DTASvalidate = {
 	GameModeObjectTypes = { 'GroundBranch.GBPlayerStart', 'GroundBranch.GBAISpawnPoint', 'GroundBranch.GBAIGuardPoint', 'GroundBranch.GBAIPatrolRoute', },
 	-- insertion points must be listed before player starts, because reasons
 	
-	}
+}
+
+-- new in 1034.4:
+local validationfunctions = require("ValidationFunctions")
+
 
 function DTASvalidate:ValidateLevel()
 	-- new feature to help mission editor validate levels
@@ -26,6 +30,15 @@ function DTASvalidate:ValidateLevel()
 		-- iterate through all potentially relevant classes
 		CurrentGameModeObjectType = self.GameModeObjectTypes[i]
 		AllObjects = gameplaystatics.GetAllActorsOfClass(CurrentGameModeObjectType)
+		
+		for i, TestActor in ipairs(AllObjects) do
+			if actor.IsColliding(TestActor) then
+				table.insert(ErrorsFound, "Warning: mission object '@" .. actor.GetName(TestActor) .. "' may be colliding with the map")
+			end
+			if not ai.IsOnNavMesh(TestActor) then
+				table.insert(ErrorsFound, "Warning: mission object '@" .. actor.GetName(TestActor) .. "' does not appear to be contacting the navmesh")
+			end
+		end
 		
 		NumGameModeObjects = NumGameModeObjects + #AllObjects
 				
