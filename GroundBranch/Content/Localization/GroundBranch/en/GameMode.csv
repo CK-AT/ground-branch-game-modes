@@ -18,6 +18,8 @@ Key,SourceString,Comment
 "gamemode_description_uplink","[PvP] Defenders guard an intel device in one of several possible locations, as Attackers must locate and hack it to win.",""
 "gamemode_defuse","Defuse",""
 "gamemode_description_defuse","[Solo/Co-Op] Locate and defuse all bombs before the timer runs out.",used in mission selection screen
+"gamemode_killconfirmedsemipermissive","Kill Confirmed (Semi-Permissive)",""
+"gamemode_description_killconfirmedsemipermissive","[Solo/Co-Op] TBD",""
 "missionsetting_timeofday","Insertion time","Opsboard"
 "missionsetting_trainingtimeofday","Set local time","Opsboard"
 "missionsetting_roundtime","Time limit","Opsboard"

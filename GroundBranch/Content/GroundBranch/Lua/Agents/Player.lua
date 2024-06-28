@@ -75,16 +75,10 @@ function Player:OnSpawned()
 end
 
 function Player:Kill(message)
-    self.DeathMessage = message
-    player.FreezePlayer(player.GetPlayerState(self.Character), 2.0)
 	self:DisplayMessage(message, 'Upper', 2.0)
-    timer.Set(
-            'PreKill_' .. self.Name,
-            self,
-            self.PostFreeze,
-            2.0,
-            false
-        )
+    -- player.SpawnEffectAtPlayer(self.Character, '/Game/GroundBranch/Inventory/Grenade/Explosions/BP_Explosion_StunLocal.BP_Explosion_StunLocal_C')
+    player.Kill(self.Character)
+    -- player.Damage(self.Character, 50, 'Explosives')
 end
 
 function Player:PostFreeze()
